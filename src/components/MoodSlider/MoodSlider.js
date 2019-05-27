@@ -63,17 +63,15 @@ export class MoodSlider extends Component {
   }
 
   render() {
-    const { readOnly } = this.props;
-
     return (
-      <div className={'mood-slider' + (readOnly ? ' -readonly' : '')}
+      <div className={'mood-slider' + (this.props.readOnly ? ' -readonly' : '')}
           ref={this.rangeRef}>
         <div className="mood-slider-track">
           <Draggable
               axis="y"
               bounds="parent"
               onDrag={this.handleDrag}
-              disabled
+              disabled={this.props.readOnly}
             >
             <div className="mood-slider-smiley" ref={this.smileyRef} >
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 149.8 121" enableBackground="new 0 0 149.8 121">
