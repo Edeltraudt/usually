@@ -1,0 +1,44 @@
+@import "../../asset/scss/utility";
+
+.mood-slider {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+
+  &-track {
+    cursor: pointer;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    padding: 5px 0;
+    position: relative;
+    width: 100%;
+
+    .-readonly & {
+      cursor: default;
+    }
+  }
+
+  &-smiley {
+    box-sizing: content-box;
+    cursor: grab;
+    padding: $spacing-medium;
+    position: absolute;
+    top: 30%;
+    width: 60%;
+
+    @include break(desktop) {
+      width: calc(4rem + 20%);
+    }
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    .-readonly & {
+      cursor: default;
+    }
+  }
+}

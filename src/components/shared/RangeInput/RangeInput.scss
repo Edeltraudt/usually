@@ -1,0 +1,88 @@
+@import "../../../asset/scss/utility";
+
+$color:   $color-inverse-border;
+$height:  5px;
+$size:    11px;
+
+@mixin track {
+  height: $height;
+  width: 100%;
+}
+
+@mixin thumb {
+  @include pure-circle($color-inverse-text, $size + 1);
+  appearance: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 999;
+}
+
+.range {
+  align-items: center;
+  display: flex;
+  position: relative;
+
+  &-wrap {
+    flex: 1;
+    margin-top: $spacing-x-small;
+    width: 100%;
+  }
+
+  &-input {
+    -webkit-appearance: none;
+    height: $height;
+    margin: 0 -($size - $height + 2);
+    outline: 0;
+    padding: 0;
+    width: calc(100% + #{($size - $height + 2) * 2});
+
+    &::-webkit-slider-thumb {
+      @include thumb;
+      margin-top: -($size - 1);
+    }
+    &::-webkit-slider-runnable-track { @include track; }
+
+    &::-moz-range-thumb { @include thumb; }
+    &::-moz-range-track { @include track; }
+
+    &::-ms-thumb { @include thumb; }
+    &::-ms-track {
+      @include track;
+      border-color: transparent;
+      color: transparent;
+      cursor: pointer;
+    }
+  }
+
+  &-helper {
+    align-items: center;
+    background: $color;
+    display: flex;
+    height: $height;
+    justify-content: space-between;
+    left: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 0;
+  }
+
+  &-dot {
+    background: $color;
+    border-radius: $size / 2;
+    height: $size;
+    width: $size;
+  }
+
+  &-labels {
+    color: $color-inverse-soft;
+    display: flex;
+    justify-content: space-between;
+    margin: $spacing-medium 0 0;
+  }
+
+  &-label {
+    font-size: $fs-x-small;
+    margin: 0;
+  }
+}

@@ -1,0 +1,14 @@
+// _icon.scss
+// Function to get the full icon path based on name and color.
+// To make use of color, requires file name conventions like
+// `file_color.svg`.
+@function icon-url($name, $color: false, $separator: '_', $ext: '.svg') {
+  $url: $icons-path + $name;
+
+  @if $color {
+    $color: str-slice('' + $color, 2);
+    $url: $url + $separator + $color;
+  }
+
+  @return url($url + $ext);
+}

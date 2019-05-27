@@ -1,0 +1,36 @@
+// color variables
+
+$color-base:          #FFFFFF;
+$color-light:         #F2F2F2;
+$color-soft:          #909090;
+$color-text:          #777D89;
+$color-headlines:     #000000;
+
+$color-primary:       #0652DD;
+$color-primary-soft:  #8EB6FF;
+$color-primary-light: #CEDFFF;
+
+$color-red:           #ED4C67;
+$color-yellow:        #FFC312;
+$color-green:         #C4E538;
+
+$color-error:         $color-red;
+$color-success:       $color-green;
+$color-info:          $color-primary;
+$color-warning:       $color-yellow;
+$color-bad:           $color-red;
+$color-medium:        $color-yellow;
+$color-good:          $color-green;
+
+$color-body-bg:       $color-light;
+$color-card-bg:       $color-base;
+
+$color-focus:         $color-primary;
+
+$color-inverse-base:  $color-primary;
+$color-inverse-base-secondary: #0044C1;
+$color-inverse-border: #002F86;
+$color-inverse-text:  $color-base;
+$color-inverse-soft:  $color-primary-soft;
+
+$color-input-focus-bg: $color-primary-light;

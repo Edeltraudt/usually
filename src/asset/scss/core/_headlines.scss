@@ -1,0 +1,19 @@
+.title {
+  @extend %title;
+}
+
+.headline {
+  @extend %headline;
+
+  &.-secondary {
+    @extend %headline-secondary;
+  }
+}
+
+.subheadline {
+  @extend %subheadline;
+}
+
+.subline {
+  @extend %subline;
+}

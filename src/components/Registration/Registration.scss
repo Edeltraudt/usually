@@ -1,0 +1,41 @@
+@import "../../asset/scss/utility";
+
+.registration {
+  margin: 0.5rem auto;
+  max-width: 350px;
+  width: 100%;
+
+  @include break(mobile) {
+    margin: 1.25rem auto;
+  }
+
+  @include break(tablet-l) {
+    margin: 0;
+    max-width: none;
+  }
+
+  &-steps {
+    display: flex;
+
+    &-wrap {
+      // overflow: hidden;
+      // width: 100%;
+    }
+
+    .step {
+      flex: 0 0 100%;
+    }
+  }
+
+  &-footer {
+    color: $color-inverse-soft;
+    font-size: $fs-small;
+    letter-spacing: 0.2em;
+    margin: 0.25em 0 0;
+    text-align: right;
+  }
+
+  &-current, &-total {
+    color: $color-inverse-text;
+  }
+}

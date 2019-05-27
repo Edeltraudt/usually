@@ -1,0 +1,37 @@
+%headlines {
+  color: $color-headlines;
+  font-weight: $fw-headlines;
+  line-height: $lh-base-s;
+}
+
+%title {
+  @extend %headlines;
+  font-size: calc(#{$fs-large} + 1.25vw);
+  margin: 0 0 0.5em;
+
+  @include break(tablet) {
+    font-size: calc(#{$fs-x-large} + 1vw);
+  }
+}
+
+%headline {
+  @extend %headlines;
+  font-size: $fs-large;
+}
+
+%headline-secondary {
+  color: $color-text;
+}
+
+%subheadline {
+  @extend %headlines;
+  font-size: $fs-medium;
+  margin-top: 0;
+}
+
+%subline {
+  color: $color-text;
+  font-size: $fs-base;
+  line-height: $lh-base;
+  margin: 0.5em 0;
+}

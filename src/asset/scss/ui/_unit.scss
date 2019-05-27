@@ -1,0 +1,18 @@
+.unit {
+  font-weight: $fw-light;
+  margin-left: 0.075em;
+
+  &:not(:last-child) {
+    margin-right: 0.25em;
+  }
+
+  // &.-toggle {
+  //   @extend %card-input;
+  //   cursor: pointer;
+  //   user-select: none;
+
+  //   > :not(.-selected) {
+  //     display: none;
+  //   }
+  // }
+}

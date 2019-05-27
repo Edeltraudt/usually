@@ -1,0 +1,70 @@
+@mixin pure-circle($color: $color-primary, $size: 0.75em) {
+  background: $color;
+  border: round($size * 0.65) solid rgba($color, 0.25);
+  background-clip: padding-box;
+  border-radius: $size * 10;
+  box-sizing: content-box;
+  height: $size;
+  transition: transition(ease-out-back);
+  width: $size;
+}
+
+%circle {
+  cursor: pointer;
+  position: relative;
+
+  &, &::before {
+    border-radius: 1em;
+    height: 1em;
+    transition: transition(ease-out-back);
+    width: 1em;
+  }
+
+  &::before {
+    content: '';
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover, &:focus {
+    transform: scale(0.9);
+
+    &::before {
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+  }
+
+  &:active {
+    &::before {
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+@mixin circle($size, $color, $opacity: 0.15) {
+  @extend %circle;
+  font-size: $size;
+
+  &, &::before {
+    background: $color;
+  }
+
+  &::before {
+    font-size: 2em;
+    opacity: $opacity;
+  }
+
+  &:hover, &:focus, &:active {
+    &::before {
+      $opacity: $opacity * 2;
+
+      @if $opacity > 0.5 {
+        $opacity: 0.45;
+      }
+
+      opacity: $opacity;
+    }
+  }
+}

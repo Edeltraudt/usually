@@ -1,0 +1,7 @@
+@mixin visually-hidden {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  position: absolute !important;
+  overflow: hidden;
+  width: 1px;
+}

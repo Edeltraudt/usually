@@ -1,0 +1,91 @@
+@mixin vertical-button-group {
+  display: flex;
+  flex-direction: column;
+
+  .button + .button {
+    margin-left: 0;
+    margin-top: $spacing-base;
+  }
+}
+
+.button {
+  background: $color-inverse-base;
+  border-radius: $border-radius + 1;
+  border: 2px solid transparent;
+  color: $color-inverse-text;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: $fw-headlines;
+  line-height: 1;
+  outline: 0;
+  padding: $spacing-x-small $spacing-large;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: 0.2s ease;
+
+  @include break(tablet) {
+    line-height: 1.5;
+    padding: $spacing-small $spacing-large;
+  }
+
+  &:hover, &:focus {
+    transform: translateY(-2px);
+  }
+
+  &:focus:not(:active) {
+    &::after {
+      content: '';
+      @include absolute;
+      background: rgba($color-inverse-base-secondary, 0.4);
+      mix-blend-mode: multiply;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &-group {
+    @include vertical-button-group;
+    width: 100%;
+
+    @include break(400px) {
+      align-items: flex-start;
+      flex-direction: row;
+
+      @include break(tablet-l, max) {
+        justify-content: center;
+      }
+
+      .button {
+        @include break(mobile) {
+          min-width: 160px;
+        }
+
+        @include break(mobile, max) {
+          flex: 1;
+        }
+
+        &:not(:last-child) {
+          margin-right: $spacing-x-small;
+        }
+
+        & + .button {
+          margin-left: $spacing-x-small;
+          margin-top: 0;
+        }
+      }
+    }
+  }
+
+  &.-secondary {
+    background: transparent;
+    border-color: currentColor;
+    color: $color-inverse-base;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}

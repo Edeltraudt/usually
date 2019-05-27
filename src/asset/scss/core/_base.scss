@@ -1,0 +1,7 @@
+html {
+  background: $color-body-bg;
+}
+
+.inverse-container {
+  @extend %inverse-container;
+}

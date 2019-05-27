@@ -1,0 +1,18 @@
+html {
+  font-size: $fs-document;
+}
+
+body {
+  color: $color-text;
+  letter-spacing: 0;
+  font: $fw-text #{$fs-base}/$lh-base $ff-text;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -moz-font-feature-settings: "liga" on;
+  font-feature-settings: "liga" on;
+}
+
+strong {
+  font-weight: $fw-medium;
+}

@@ -1,0 +1,134 @@
+@import "../../../asset/scss/utility";
+
+.step {
+  clip-path: inset(0 0 0 0);
+  position: relative;
+  transform: translate3d(0, 0, -1px);
+  transition: clip-path 0.4s ease,
+    opacity 0.2s 0.15s ease;
+
+  &.-disabled {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  &:not(.-disabled) ~ & {
+    clip-path: inset(0 0 0 100%);
+    opacity: 0;
+
+    &.-hidden {
+      visibility: hidden;
+    }
+  }
+
+  &.-out {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    transform: translateX(100%);
+    will-change: clip-path;
+
+    // new active step
+    & + .step:not(.-out) {
+      clip-path: inset(0 0 0 0);
+      opacity: 1;
+      transition: clip-path 0.25s ease,
+        opacity 0.15s ease;
+      transition-delay: 0.3s;
+    }
+  }
+
+  &-header {
+    margin: 0 0 1em;
+  }
+
+  &-label, &-headline, &-input, &-unit {
+    @extend %headline;
+    color: inherit;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  &-label {
+    color: $color-inverse-soft;
+    font-weight: $fw-text;
+  }
+
+  &-label, &-headline {
+    @include break(tablet-l) {
+      @include break(desktop, max) {
+        font-size: $fs-medium;
+      }
+    }
+  }
+
+  &-input {
+    background: transparent;
+    color: $color-inverse-text;
+    font-weight: $fw-text;
+    line-height: 1;
+    padding: 0.625em 0.75em;
+    width: 100%;
+
+    &::placeholder {
+      color: mix($color-inverse-soft, $color-inverse-base-secondary, 70%);
+    }
+
+    &[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    &-wrap {
+      align-items: center;
+      background: $color-inverse-base-secondary;
+      border-bottom: 3px solid rgba($color-inverse-border, 0.75);
+      display: flex;
+      width: 100%;
+
+      .-range & {
+        background: transparent;
+        border-bottom-color: transparent;
+        margin-top: $spacing-large * 0.8;
+      }
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      display: none;
+    }
+  }
+
+  &-unit {
+    color: $color-inverse-soft;
+    font-weight: $fw-text;
+    margin: 0 $spacing-medium 0 0;
+  }
+
+  &-button {
+    font-size: 11px;
+    font-weight: $fw-bold;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    margin: 0 1em 0 0;
+    min-width: 50px;
+    padding: 0.25em 0.35em 0.3em;
+    text-align: center;
+    text-transform: uppercase;
+
+    &:not(:focus):not(:hover) {
+      background-color: $color-inverse-border;
+    }
+
+    .-range & {
+      margin-right: 0;
+      right: 0;
+      top: $fs-large * $lh-base * 1.2;
+      position: absolute;
+
+      @include break(tablet-l) {
+        @include break(desktop, max) {
+          top: $fs-medium * $lh-base * 1.2;
+        }
+      }
+    }
+  }
+}
