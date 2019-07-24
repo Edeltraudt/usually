@@ -1,0 +1,21 @@
+@import "../../../asset/scss/utility";
+
+$reserved-lines: 3;
+$line-height: 1.2;
+
+.card-text {
+  &-input {
+    border: 0;
+    color: $color-text;
+    height: 1em * $line-height * $reserved-lines * 1.1;
+    line-height: $line-height;
+    outline: 0;
+    padding: 5px 0;
+    resize: none;
+    width: 100%;
+
+    &::placeholder {
+      color: rgba($color-soft, 0.5);
+    }
+  }
+}

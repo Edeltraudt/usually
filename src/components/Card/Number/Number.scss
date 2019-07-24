@@ -1,0 +1,76 @@
+@import "../../../asset/scss/utility";
+
+.card-value {
+  align-items: baseline;
+  color: $color-focus;
+  display: flex;
+  flex: 1;
+  font-size: $fs-x-large;
+  font-weight: $fw-headlines;
+  margin: 0 0 0.125em;
+}
+
+.card-number {
+  &-wrap {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-input {
+    background: transparent;
+    border-radius: $border-radius;
+    border: 2px solid transparent;
+    color: inherit;
+    line-height: 1;
+    flex: 0 0 auto;
+    font: inherit;
+    margin: -2px 0 -2px -3px;
+    padding: 1px 3px 0;
+    transition: 0.2s ease;
+
+    &:hover {
+      border-color: $color-primary-light;
+    }
+
+    &:focus, &:focus-within {
+      background: $color-primary-light;
+    }
+
+    input {
+      color: inherit;
+      line-height: 1;
+      display: block;
+    }
+  }
+
+  &-actions {
+    flex: 0 0 auto;
+  }
+
+  &-action {
+    align-items: center;
+    background: $color-primary-light;
+    border-radius: 2em;
+    color: $color-primary;
+    cursor: pointer;
+    display: inline-flex;
+    height: 2.5em;
+    justify-content: center;
+    transition: 0.2s ease;
+    vertical-align: bottom;
+    width: 2.5em;
+
+    &:hover, &:focus {
+      background: $color-primary-soft;
+    }
+
+    & + & {
+      margin-left: $spacing-x-small;
+    }
+
+    .icon {
+      height: auto;
+      width: 0.875em;
+    }
+  }
+}

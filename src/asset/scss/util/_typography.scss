@@ -16,7 +16,8 @@
 
 %headline {
   @extend %headlines;
-  font-size: $fs-large;
+  font-size: calc(1.25rem + 0.5vw);
+  margin: 0;
 }
 
 %headline-secondary {

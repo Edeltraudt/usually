@@ -6,6 +6,10 @@
     margin-right: 0.25em;
   }
 
+  .-time & {
+    margin-left: 0;
+  }
+
   // &.-toggle {
   //   @extend %card-input;
   //   cursor: pointer;

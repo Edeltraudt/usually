@@ -1,0 +1,62 @@
+@import "../../asset/scss/utility";
+
+%card-container {
+  padding: $spacing-medium $spacing-large;
+
+  &:not(:last-child) {
+    border-bottom: 3px solid $color-border;
+  }
+}
+
+.card {
+  $shadow-color: mix($color-text, $color-focus, 90%);
+
+  background: $color-base;
+  border-radius: $border-radius-large;
+  box-shadow: 0 2px 6px -1px rgba($shadow-color, 0.075),
+    0 12px 40px -10px rgba($shadow-color, 0.2);
+
+  &-header {
+    @extend %card-container;
+    align-items: center;
+    color: $color-focus;
+    display: flex;
+
+    &-icon {
+      align-items: center;
+      border-radius: 2em;
+      border: 3px solid $color-primary-light;
+      display: flex;
+      flex: 0 0 2em;
+      justify-content: center;
+      margin: 0 1.5em 0 0;
+      height: 2em;
+
+      .icon {
+        height: 2.25em;
+        max-height: none;
+        max-width: none;
+        position: absolute;
+        width: 2.25em;
+      }
+    }
+
+    &-title {
+      color: inherit;
+      margin: 0;
+    }
+  }
+
+  &-section {
+    @extend %card-container;
+
+    &-heading {
+      font-size: $fs-small;
+      font-weight: $fw-headlines;
+      margin: 0;
+    }
+  }
+
+  &-info {
+  }
+}

@@ -31,6 +31,10 @@ svg {
   * {
     fill: currentColor;
 
+    &[fill="none"] {
+      fill: none;
+    }
+
     &[stroke] {
       fill: none;
       stroke: currentColor;

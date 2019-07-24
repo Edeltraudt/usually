@@ -1,0 +1,77 @@
+@import "../../asset/scss/utility";
+
+.dashboard {
+  display: flex;
+  height: 100vh;
+  min-height: 100vh;
+
+  &-sidebar {
+    @extend %inverse-container;
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 400px;
+    height: 100%;
+    max-width: 30%;
+    position: relative;
+    padding: $spacing-x-large 0 ($spacing-x-large * 2);
+    width: 100%;
+
+    &-header {
+      @include container;
+      max-width: 350px;
+    }
+
+    .mood-slider {
+      flex: 1;
+      margin: 0 auto;
+      max-width: 240px;
+      width: 100%;
+
+      @include break(desktop) {
+        max-width: none;
+      }
+    }
+
+    &::before {
+      $width: 4px;
+
+      background: repeating-linear-gradient(
+        $color-inverse-border 0,
+        $color-inverse-border 15px,
+        transparent 15px,
+        transparent 30px
+      );
+      bottom: 0;
+      content: '';
+      left: 50%;
+      margin-left: -$width / 2;
+      opacity: 0.5;
+      position: absolute;
+      top: 0;
+      width: $width;
+    }
+  }
+
+  &-content {
+    @include container;
+    flex: 1;
+    padding: $spacing-x-large;
+
+    &-header {
+      margin: 0 0 $spacing-x-large;
+    }
+
+    &-subheadline {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  &-grid {
+    align-items: start;
+    display: grid;
+    grid-gap: 0 $spacing-large;
+    grid-auto-rows: $spacing-base;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    padding-bottom: $spacing-x-large
+  }
+}
