@@ -1,6 +1,10 @@
 .unit {
+  border-radius: $border-radius;
+  border: 2px solid transparent;
   font-weight: $fw-light;
+  line-height: 1;
   margin-left: 0.075em;
+  transition: 0.2s ease;
 
   &:not(:last-child) {
     margin-right: 0.25em;
@@ -8,6 +12,12 @@
 
   .-time & {
     margin-left: 0;
+  }
+
+  &.-toggle {
+    @extend %card-input;
+    cursor: pointer;
+    user-select: none;
   }
 
   // &.-toggle {

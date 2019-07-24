@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import './Card.scss';
 
+import * as helpers from '../../helpers';
+
 export class Card extends Component {
   constructor(props) {
     super(props);
@@ -15,10 +17,16 @@ export class Card extends Component {
   }
 
   handleFieldChange = (value, field) => {
+    let saveValue = value;
+
+    if (field.props.unit === 'datetime') {
+      saveValue = helpers.formatDate(new Date(value));
+    }
+
     this.props.store.saveFieldValue(
       this.props.data.key,
       field.key,
-      value
+      saveValue
     );
   }
 

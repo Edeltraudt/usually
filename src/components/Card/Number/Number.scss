@@ -8,33 +8,32 @@
   font-size: $fs-x-large;
   font-weight: $fw-headlines;
   margin: 0 0 0.125em;
+
+  .unit {
+    margin-left: 0;
+
+    &.-toggle {
+      height: 100%;
+      margin-left: 5px;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
 }
 
 .card-number {
   &-wrap {
     display: flex;
     justify-content: space-between;
+    margin: 4px 0;
   }
 
   &-input {
-    background: transparent;
-    border-radius: $border-radius;
-    border: 2px solid transparent;
+    @extend %card-input;
     color: inherit;
     line-height: 1;
     flex: 0 0 auto;
     font: inherit;
-    margin: -2px 0 -2px -3px;
-    padding: 1px 3px 0;
-    transition: 0.2s ease;
-
-    &:hover {
-      border-color: $color-primary-light;
-    }
-
-    &:focus, &:focus-within {
-      background: $color-primary-light;
-    }
 
     input {
       color: inherit;

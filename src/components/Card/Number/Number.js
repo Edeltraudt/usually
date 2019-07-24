@@ -27,7 +27,6 @@ export class Number extends Component {
 
     if (this.props.unit === 'datetime') {
       value = props.value.getHours() + ':' + props.value.getMinutes();
-      console.log(props.value.getHours());
     }
 
     this.inputRef = React.createRef();
@@ -37,6 +36,54 @@ export class Number extends Component {
       timeout: null
     };
 
+    if (this.props.unit === 'datetime' || this.props.unit === 'time') {
+      this.state.timeUnit = 'am';
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.unit === 'datetime') {
+      this.setState({ value: this.convertTime([
+        this.props.value.getHours(),
+        this.props.value.getMinutes()
+      ])});
+    } else if (this.props.unit === 'time') {
+      this.setState({ value: this.convertTime([this.props.value])});
+    }
+  }
+
+  convertTime(timeArray) {
+    let hours = 0,
+        minutes = 0;
+    let ampm = 'am';
+
+    // time given in minutes
+    if (timeArray.length === 1) {
+      minutes = timeArray[0] % 60;
+      hours = (timeArray[0] - minutes) / 60;
+
+    // time given in hours, minutes
+    } else if (timeArray.length === 2) {
+      hours = timeArray[0];
+      minutes = timeArray[1];
+
+
+    // invalid format
+    } else {
+      console.error('Invalid time array', timeArray);
+    }
+
+    if (hours >= 12) ampm = 'pm';
+    if (hours === 0) hours = 12;
+
+    hours = hours % 12;
+
+    hours = hours.toString().padStart(2, '0');
+    minutes = minutes.toString().padStart(2, '0');
+
+    this.setState({timeUnit: ampm});
+
+    return hours + ':' + minutes;
   }
 
   componentWillReceiveProps(props) {
@@ -60,7 +107,10 @@ export class Number extends Component {
     if (this.props.onChange) {
       this.setState({
         timeout: window.setTimeout(() => {
-          this.props.onChange(value);
+          if (this.state.internalValue) {
+            this.props.onChange(this.state.internalValue);
+          } else this.props.onChange(this.state.value);
+
           this.setState({ timeout: null });
         }, 200)
       });
@@ -69,8 +119,21 @@ export class Number extends Component {
 
   handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      if (this.props.onEnter) {
-        this.props.onEnter(this.state.value);
+      if (this.props.onChange) {
+        if (this.state.internalValue) {
+          this.props.onChange(this.state.internalValue);
+        } else this.props.onChange(this.state.value);
+      }
+
+      if (this.props.unit === 'time' || this.props.unit === 'datetime') {
+        let date = new Date();
+        let split = this.state.value.split(':');
+
+        date.setHours(split);
+        this.setState({
+          internalValue: date,
+          value: this.convertTime(split),
+        });
       }
 
       // autosize input case
@@ -81,6 +144,15 @@ export class Number extends Component {
     }
   }
 
+  handleUnitClick = (event) => {
+    if (this.state.timeUnit) {
+      if (this.state.timeUnit === 'am') {
+        this.setState({timeUnit: 'pm'});
+      } else {
+        this.setState({timeUnit: 'am'});
+      }
+    }
+  }
 
   renderDefaultInput() {
     return <AutosizeInput
@@ -123,7 +195,10 @@ export class Number extends Component {
         <div className="card-number-wrap">
           <div className="card-value">
             {this.renderInput()}
-            <span className="unit">{this.props.unit}</span>
+            <span className={"unit" + (this.state.timeUnit ? " -toggle" : "")}
+                onClick={this.handleUnitClick}>
+              {this.state.timeUnit ? this.state.timeUnit : this.props.unit}
+            </span>
           </div>
 
           {this.props.quickActions &&
