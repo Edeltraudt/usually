@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import AutosizeInput from 'react-input-autosize';
 import TimeField from 'react-simple-timefield';
 
+import * as helpers from '../../../helpers';
+
 import './Number.scss';
 
 export class Number extends Component {
@@ -24,9 +26,13 @@ export class Number extends Component {
     super(props);
 
     let value = props.value.toString() || 0;
+    let ampm = 'am';
 
     if (this.props.unit === 'datetime') {
-      value = props.value.getHours() + ':' + props.value.getMinutes();
+      let [hours, minutes] = value.split(':');
+      let [h, mod] = helpers.convertAmPm(hours);
+      value = `${h}:${minutes}`;
+      ampm = mod;
     }
 
     this.inputRef = React.createRef();
@@ -36,19 +42,8 @@ export class Number extends Component {
       timeout: null
     };
 
-    if (this.props.unit === 'datetime' || this.props.unit === 'time') {
-      this.state.timeUnit = 'am';
-    }
-  }
-
-  componentDidMount() {
     if (this.props.unit === 'datetime') {
-      this.setState({ value: this.convertTime([
-        this.props.value.getHours(),
-        this.props.value.getMinutes()
-      ])});
-    } else if (this.props.unit === 'time') {
-      this.setState({ value: this.convertTime([this.props.value])});
+      this.state.timeUnit = ampm;
     }
   }
 
@@ -64,10 +59,7 @@ export class Number extends Component {
 
     // time given in hours, minutes
     } else if (timeArray.length === 2) {
-      hours = timeArray[0];
-      minutes = timeArray[1];
-
-
+      [hours, minutes] = timeArray;
     // invalid format
     } else {
       console.error('Invalid time array', timeArray);
@@ -98,7 +90,9 @@ export class Number extends Component {
     if (event.persist) event.persist();
     if (event.target) value = event.target.value.toString();;
 
-    if (!(this.props.unit === 'time' || this.props.unit === 'datetime')) {
+    if (this.props.unit === 'time' || this.props.unit === 'datetime') {
+      this.handleTimeChange(value);
+    } else {
       value = parseInt(event.target.value);
     }
 
@@ -117,6 +111,12 @@ export class Number extends Component {
     }
   }
 
+  handleTimeChange = (value) => {
+    let [hours, minutes] = value.split(':');
+    hours = helpers.convertTo24Hours(hours, this.state.timeUnit);
+    this.setState({internalValue: `${hours}:${minutes}`});
+  }
+
   handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       if (this.props.onChange) {
@@ -126,14 +126,7 @@ export class Number extends Component {
       }
 
       if (this.props.unit === 'time' || this.props.unit === 'datetime') {
-        let date = new Date();
-        let split = this.state.value.split(':');
-
-        date.setHours(split);
-        this.setState({
-          internalValue: date,
-          value: this.convertTime(split),
-        });
+        this.handleTimeChange(this.state.value);
       }
 
       // autosize input case
@@ -146,11 +139,15 @@ export class Number extends Component {
 
   handleUnitClick = (event) => {
     if (this.state.timeUnit) {
-      if (this.state.timeUnit === 'am') {
-        this.setState({timeUnit: 'pm'});
-      } else {
-        this.setState({timeUnit: 'am'});
-      }
+      const date = new Date(this.state.internalValue);
+      const minutes = date.getMinutes();
+      const [hours, ampm] =
+        helpers.convertAmPm(date.getHours(), this.state.timeUnit);
+      const value = `${hours}:${minutes}`;
+      const internalValue = `${helpers.convertTo24Hours(hours)}:${minutes}`;
+
+      date.setHours(helpers.convertTo24Hours(hours, ampm));
+      this.setState({ value, internalValue, timeUnit: ampm });
     }
   }
 
@@ -197,7 +194,8 @@ export class Number extends Component {
             {this.renderInput()}
             <span className={"unit" + (this.state.timeUnit ? " -toggle" : "")}
                 onClick={this.handleUnitClick}>
-              {this.state.timeUnit ? this.state.timeUnit : this.props.unit}
+              {this.props.unit === 'time' ? 'h' :
+                (this.state.timeUnit ? this.state.timeUnit : this.props.unit)}
             </span>
           </div>
 

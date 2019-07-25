@@ -54,11 +54,11 @@ export class Dashboard extends Component {
         <main className="dashboard-content">
           <header className="dashboard-content-header">
             <p className="headline dashboard-content-headline">
-              {helpers.printGreeting(this.date)},
+              {helpers.printGreeting()},
               {store.user.name}!
             </p>
             <h2 className="headline -secondary dashboard-content-subheadline">Your Dashboard</h2>
-            <p className="dashboard-content-date">{helpers.printDate(this.date)}</p>
+            <p className="dashboard-content-date">{helpers.printDate()}</p>
           </header>
 
           <div className="dashboard-grid" ref={this.gridRef}>

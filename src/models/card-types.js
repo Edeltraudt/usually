@@ -24,10 +24,10 @@ export const SleepCard = new Card('sleep', 'Last Night\'s Sleep', 'time', IconSl
     unit: 'time',
     info: '8h 12m seem to work best for you.'
   });
-  SleepCard.createField(Number, 'amount', {
+  SleepCard.createField(Number, 'time', {
     label: 'Went to sleep at',
     showLabel: true,
-    value: sleepTime,
+    value: '22:32',
     unit: 'datetime',
     info: 'Sounds good! Going to sleep between 10–11pm improves your mood by 23%.'
   });
@@ -53,5 +53,5 @@ export const EventsCard = new Card('events', 'Life Events', null, IconEvent);
     value: ''
   });
   EventsCard.createField(Rating, 'influence', {
-    label: 'How did these events affect you?'
+    label: 'How do these events affect you today?'
   });
