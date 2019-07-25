@@ -14,7 +14,7 @@ class Start extends Component {
     super(props);
 
     this.state = {
-      isRegistering: true
+      isRegistering: false
     };
   }
 

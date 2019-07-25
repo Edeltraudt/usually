@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import AutosizeInput from 'react-input-autosize';
+import * as helpers from '../../../helpers';
 
 import './Number.scss';
+
 import { Datetime } from './Datetime';
 import { Time } from './Time';
+import { Slider } from '../Slider';
 
 export class Number extends Component {
   static propTypes = {
@@ -69,6 +72,12 @@ export class Number extends Component {
     }
   }
 
+  handleQuickAction = (operator, amount) => {
+    this.setState({
+      value: helpers.calculate(operator, this.state.value, amount)
+    });
+  }
+
   renderInput() {
     const sharedProps = {
       style: { fontSize: 30 },
@@ -92,7 +101,8 @@ export class Number extends Component {
   }
 
   render() {
-    return (
+    return (<>
+      <Slider />
       <div className="card-number">
         <span aria-label={this.props.label} className="card-section-heading">
           {(this.props.showLabel) && this.props.label}
@@ -107,7 +117,9 @@ export class Number extends Component {
           {this.props.quickActions &&
             <div className="card-number-actions">
               {this.props.quickActions.map((quickAction, index) =>
-                <button className="card-number-action" key={index}>
+                <button className="card-number-action"
+                    onClick={() => this.handleQuickAction(quickAction.operator, quickAction.amount)}
+                    key={index}>
                   <quickAction.icon />
                 </button> )}
             </div>}
@@ -116,6 +128,6 @@ export class Number extends Component {
         {this.props.info &&
           <p className="card-info">{this.props.info}</p>}
       </div>
-    );
+    </>);
   }
 }

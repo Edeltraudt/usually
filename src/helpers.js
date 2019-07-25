@@ -5,6 +5,11 @@ const monthNames = ['January', 'February', 'March', 'April',
   'November', 'December'
 ];
 
+const operations = {
+  '+': (a, b) => a + b,
+  '-': (a, b) => a - b
+};
+
 /**
  * Formats a date object into the data-structure format.
  */
@@ -12,6 +17,9 @@ export function formatDate(date) {
   return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
 }
 
+/**
+ * Formats time into the data-structure format.
+ */
 export function formatTime(hours, minutes = 0) {
   hours = hours.toString().padStart(2, '0');
   minutes = minutes.toString().padStart(2, '0');
@@ -141,4 +149,16 @@ export function parseJSON(string) {
   } else {
     return null;
   }
+}
+
+export function getItem(key) {
+  return parseJSON(window.localStorage.getItem(key));
+}
+
+export function setItem(key, value) {
+  window.localStorage.setItem(key, JSON.stringify(value));
+}
+
+export function calculate(operator, a = 0, b = 0) {
+  return operations[operator](a, b);
 }

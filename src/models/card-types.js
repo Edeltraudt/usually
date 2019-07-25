@@ -1,5 +1,5 @@
 import { Card } from "./card";
-import { IconNutrition, IconSleep, IconHydration, IconGlassS, IconGlassL, IconEvent } from "../asset/icons";
+import { IconNutrition, IconSleep, IconHydration, IconGlassS, IconGlassL, IconEvent, IconFocus } from "../asset/icons";
 import { Number } from "../components/Card/Number/Number";
 import { Rating } from "../components/Card/Rating/Rating";
 import { Text } from "../components/Card/Text/Text";
@@ -41,8 +41,8 @@ export const HydrationCard = new Card('hydration', 'Hydration', 'ml', IconHydrat
     value: 700,
     info: 'Your recommended intake for today so far is 2,300 ml.',
     quickActions: [
-      { action: 'add', amount: 250, icon: IconGlassS },
-      { action: 'add', amount: 400, icon: IconGlassL }
+      { operator: '+', amount: 250, icon: IconGlassS },
+      { operator: '+', amount: 400, icon: IconGlassL }
     ]
   });
 
@@ -54,4 +54,10 @@ export const EventsCard = new Card('events', 'Life Events', null, IconEvent);
   });
   EventsCard.createField(Rating, 'influence', {
     label: 'How do these events affect you today?'
+  });
+
+export const MentalFitnessCard = new Card('mental', 'Mental Fitness', null, IconFocus);
+  MentalFitnessCard.createField(Rating, 'quality', {
+    label: 'Was it big brain time?',
+    showLabel: false
   });

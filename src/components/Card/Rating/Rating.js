@@ -44,8 +44,11 @@ export class Rating extends Component {
 
     return (
       <div className={"card-rating" + parentCls}>
-        {this.props.label &&
-          <h4 className="card-section-heading">{this.props.label}</h4>}
+        {this.props.label && <>
+          {this.props.showLabel
+            ? <h4 className="card-section-heading">{this.props.label}</h4>
+            : <span aria-label={this.props.label} />}
+        </>}
         <div className="card-rating-wrap">
           <div className="card-rating-slider"></div>
 

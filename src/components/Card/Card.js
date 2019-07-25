@@ -18,6 +18,7 @@ export class Card extends Component {
     let saveValue = value;
 
     this.props.store.saveFieldValue(
+      new Date(),
       this.props.data.key,
       field.key,
       saveValue

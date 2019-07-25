@@ -55,6 +55,7 @@
 
   &-section {
     @extend %card-container;
+    position: relative;
 
     &-heading {
       font-size: $fs-small;

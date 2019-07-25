@@ -7,7 +7,7 @@ import * as helpers from '../../helpers';
 import { MoodSlider } from '../../components/MoodSlider';
 import { Card } from '../../components/Card';
 
-import { NutritionCard, SleepCard, HydrationCard, EventsCard } from '../../models/card-types';
+import { NutritionCard, SleepCard, HydrationCard, EventsCard, MentalFitnessCard } from '../../models/card-types';
 
 export class Dashboard extends Component {
   date = new Date();
@@ -54,7 +54,7 @@ export class Dashboard extends Component {
         <main className="dashboard-content">
           <header className="dashboard-content-header">
             <p className="headline dashboard-content-headline">
-              {helpers.printGreeting()},
+              {helpers.printGreeting()},&nbsp;
               {store.user.name}!
             </p>
             <h2 className="headline -secondary dashboard-content-subheadline">Your Dashboard</h2>
@@ -70,6 +70,8 @@ export class Dashboard extends Component {
                 getRef={ref => (this.gridItems[2] = ref)} />
             <Card data={EventsCard} store={store}
                 getRef={ref => (this.gridItems[3] = ref)} />
+            <Card data={MentalFitnessCard} store={store}
+                getRef={ref => (this.gridItems[4] = ref)} />
           </div>
         </main>
       </div>

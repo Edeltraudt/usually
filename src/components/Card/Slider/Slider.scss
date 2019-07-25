@@ -1,0 +1,36 @@
+@import "../../../asset/scss/utility";
+
+$padding: 5px;
+$border-width: 2px;
+
+.slider {
+  cursor: pointer;
+  left: 0;
+  padding: $padding 0;
+  position: absolute;
+  top: -($padding + $border-width + 1);
+  width: 100%;
+
+  &-line {
+    border-bottom: $border-width solid $color-border;
+    border-top: $border-width solid $color-border;
+    position: relative;
+    transition: transition(ease);
+  }
+
+  &-indicator {
+    @include circle(8px, $color-focus);
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover & {
+    &-line {
+      border-color: darken($color-border, 5%);
+    }
+  }
+}

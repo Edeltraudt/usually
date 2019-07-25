@@ -268,3 +268,15 @@ export class SmileySad extends React.Component {
     );
   }
 }
+
+export class IconFocus extends React.Component {
+  render() {
+    return (
+      <svg className="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+        <title>Focus</title>
+        <path fill="none" stroke="currentColor" strokeMiterlimit="10" strokeWidth="5" d="M32 2v16m0 28v16M18 32H2m60 0H46" strokeLinejoin="miter" strokeLinecap="butt"></path>
+        <circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" strokeMiterlimit="10" strokeWidth="5" strokeLinejoin="miter" strokeLinecap="butt"></circle>
+      </svg>
+    );
+  }
+}
