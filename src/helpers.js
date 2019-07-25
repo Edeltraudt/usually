@@ -12,46 +12,60 @@ export function formatDate(date) {
   return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
 }
 
+export function formatTime(hours, minutes = 0) {
+  hours = hours.toString().padStart(2, '0');
+  minutes = minutes.toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+}
+
 /**
  * Converts a time string into number of minutes.
  */
 export function getTimeAsMinutes(str) {
   const [hours, minutes = 0] = str.split(':');
-  return hours * 60 + minutes;
+  return parseInt(hours) * 60 + parseInt(minutes);
 }
 
 /**
  * Takes hours and original am/pm as starting parameters and
  * returns converted hours and opposite am/pm as an object.
  */
-export function convertAmPm(hours, from) {
-  let ampm = 'am';
-  hours = parseInt(hours);
+export function convertAmPm(time, isPm, updateAmPm = true) {
+  let [hours, minutes] = time.split(':');
+  let _isPm = isPm;
+
+  if (updateAmPm) {
+    if (hours >= 12) _isPm = true;
+    else _isPm = false;
+  }
 
   // convert 24-hour format into 12-hour format
-  if (!from || hours > 12) {
-    if (hours >= 12) ampm = 'pm';
-    if (hours === 0) hours = 12;
-
+  if (isPm === undefined || hours > 12) {
     hours = hours % 12;
+    if (hours === 0) hours = 12;
   }
 
-  // convert 12-hour format into opposite am/pm
-  if (from === 'am' || from === 'pm') {
-    ampm = (from === 'am') ? 'pm' : 'am';
+  if (updateAmPm && isPm !== undefined) _isPm = !isPm;
 
-  }
-
-  return [ hours, ampm ];
+  return [
+    formatTime(hours, minutes),
+    convertTo24HoursFormat(hours, minutes, _isPm),
+    _isPm
+  ];
 }
 
-export function convertTo24Hours(hours, ampm) {
+export function convertTo24Hours(hours, isPm) {
   hours = parseInt(hours);
 
   if (hours === 12) hours = 0;
-  if (hours < 12 && ampm === 'pm') hours += 12;
+  if (hours < 12 && isPm) hours += 12;
 
   return hours;
+}
+
+export function convertTo24HoursFormat(hours, minutes, isPm) {
+  hours = convertTo24Hours(hours, isPm);
+  return formatTime(hours, minutes);;
 }
 
 /**

@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import AutosizeInput from 'react-input-autosize';
-import TimeField from 'react-simple-timefield';
-
-import * as helpers from '../../../helpers';
 
 import './Number.scss';
+import { Datetime } from './Datetime';
+import { Time } from './Time';
 
 export class Number extends Component {
   static propTypes = {
@@ -25,57 +24,10 @@ export class Number extends Component {
   constructor(props) {
     super(props);
 
-    let value = props.value.toString() || 0;
-    let ampm = 'am';
-
-    if (this.props.unit === 'datetime') {
-      let [hours, minutes] = value.split(':');
-      let [h, mod] = helpers.convertAmPm(hours);
-      value = `${h}:${minutes}`;
-      ampm = mod;
-    }
+    let value = props.value || 0;
 
     this.inputRef = React.createRef();
-    this.state = {
-      value: value || 0,
-      internalValue: props.value.toString(),
-      timeout: null
-    };
-
-    if (this.props.unit === 'datetime') {
-      this.state.timeUnit = ampm;
-    }
-  }
-
-  convertTime(timeArray) {
-    let hours = 0,
-        minutes = 0;
-    let ampm = 'am';
-
-    // time given in minutes
-    if (timeArray.length === 1) {
-      minutes = timeArray[0] % 60;
-      hours = (timeArray[0] - minutes) / 60;
-
-    // time given in hours, minutes
-    } else if (timeArray.length === 2) {
-      [hours, minutes] = timeArray;
-    // invalid format
-    } else {
-      console.error('Invalid time array', timeArray);
-    }
-
-    if (hours >= 12) ampm = 'pm';
-    if (hours === 0) hours = 12;
-
-    hours = hours % 12;
-
-    hours = hours.toString().padStart(2, '0');
-    minutes = minutes.toString().padStart(2, '0');
-
-    this.setState({timeUnit: ampm});
-
-    return hours + ':' + minutes;
+    this.state = { value, timeout: null };
   }
 
   componentWillReceiveProps(props) {
@@ -88,98 +40,54 @@ export class Number extends Component {
     let value = event;
 
     if (event.persist) event.persist();
-    if (event.target) value = event.target.value.toString();;
-
-    if (this.props.unit === 'time' || this.props.unit === 'datetime') {
-      this.handleTimeChange(value);
-    } else {
-      value = parseInt(event.target.value);
-    }
+    if (event.target) value = event.target.value;
 
     this.setState({ value });
 
+    // pass updated value upwards with a delay
     if (this.props.onChange) {
       this.setState({
         timeout: window.setTimeout(() => {
-          if (this.state.internalValue) {
-            this.props.onChange(this.state.internalValue);
-          } else this.props.onChange(this.state.value);
-
+          this.props.onChange(value);
           this.setState({ timeout: null });
         }, 200)
       });
     }
   }
 
-  handleTimeChange = (value) => {
-    let [hours, minutes] = value.split(':');
-    hours = helpers.convertTo24Hours(hours, this.state.timeUnit);
-    this.setState({internalValue: `${hours}:${minutes}`});
-  }
-
   handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       if (this.props.onChange) {
-        if (this.state.internalValue) {
-          this.props.onChange(this.state.internalValue);
-        } else this.props.onChange(this.state.value);
-      }
-
-      if (this.props.unit === 'time' || this.props.unit === 'datetime') {
-        this.handleTimeChange(this.state.value);
+        this.props.onChange(this.state.value);
       }
 
       // autosize input case
-      if (this.inputRef.input) this.inputRef.input.blur()
+      if (this.inputRef.input) this.inputRef.input.blur();
 
       // regular input
       if (this.inputRef.blur) this.inputRef.blur();
     }
   }
 
-  handleUnitClick = (event) => {
-    if (this.state.timeUnit) {
-      const date = new Date(this.state.internalValue);
-      const minutes = date.getMinutes();
-      const [hours, ampm] =
-        helpers.convertAmPm(date.getHours(), this.state.timeUnit);
-      const value = `${hours}:${minutes}`;
-      const internalValue = `${helpers.convertTo24Hours(hours)}:${minutes}`;
-
-      date.setHours(helpers.convertTo24Hours(hours, ampm));
-      this.setState({ value, internalValue, timeUnit: ampm });
-    }
-  }
-
-  renderDefaultInput() {
-    return <AutosizeInput
-      type="text"
-      onChange={this.handleChange}
-      onKeyPress={this.handleKeyPress}
-      value={this.state.value}
-      style={{ fontSize: 30 }}
-      ref={(input) => this.inputRef = input}
-      className='card-number-input'
-    />
-  }
-
   renderInput() {
-    switch (this.props.unit) {
-      case 'datetime':
-        // falls through
-      case 'time':
-        return <TimeField
-          input={this.renderDefaultInput()}
-          value={this.state.value}
-          onChange={this.handleChange}
-        />
+    const sharedProps = {
+      style: { fontSize: 30 },
+      value: this.state.value,
+      onChange: this.handleChange,
+      onKeyPress: this.handleKeyPress,
+      className: 'card-number-input'
+    }
 
-      case 'number':
-        // falls through
-      case 'text':
-        // falls through
+    switch (this.props.unit) {
+      case 'time':
+        return <Time {...sharedProps} />;
+      case 'datetime':
+        return <Datetime {...sharedProps} />;
       default:
-        return this.renderDefaultInput();
+        return <AutosizeInput {...sharedProps}
+          type="text"
+          ref={(input) => this.inputRef = input}
+        />;
     }
   }
 
@@ -192,11 +100,8 @@ export class Number extends Component {
         <div className="card-number-wrap">
           <div className="card-value">
             {this.renderInput()}
-            <span className={"unit" + (this.state.timeUnit ? " -toggle" : "")}
-                onClick={this.handleUnitClick}>
-              {this.props.unit === 'time' ? 'h' :
-                (this.state.timeUnit ? this.state.timeUnit : this.props.unit)}
-            </span>
+            {(this.props.unit && this.props.unit !== 'time' && this.props.unit !== 'datetime') &&
+              <span className="unit">{this.props.unit}</span>}
           </div>
 
           {this.props.quickActions &&
