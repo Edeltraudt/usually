@@ -14,14 +14,17 @@ export class Number extends Component {
   static propTypes = {
     label: PropTypes.string,
     showLabel: PropTypes.bool,
-    value: PropTypes.any.isRequired,
+    value: PropTypes.any,
     unit: PropTypes.string,
     info: PropTypes.string,
-    quickActions: PropTypes.array
+    onChange: PropTypes.func,
+    quickActions: PropTypes.array,
+    data: PropTypes.any
   };
 
   static defaultProps = {
-    showLabel: false
+    showLabel: false,
+    value: 0
   };
 
   constructor(props) {
@@ -45,16 +48,18 @@ export class Number extends Component {
     if (event.persist) event.persist();
     if (event.target) value = event.target.value;
 
-    this.setState({ value });
+    if (this.props.unit === 'datetime' || !isNaN(value)) {
+      this.setState({ value });
 
-    // pass updated value upwards with a delay
-    if (this.props.onChange) {
-      this.setState({
-        timeout: window.setTimeout(() => {
-          this.props.onChange(value);
-          this.setState({ timeout: null });
-        }, 200)
-      });
+      // pass updated value upwards with a delay
+      if (this.props.onChange) {
+        this.setState({
+          timeout: window.setTimeout(() => {
+            this.props.onChange(value);
+            this.setState({ timeout: null });
+          }, 200)
+        });
+      }
     }
   }
 
@@ -75,6 +80,10 @@ export class Number extends Component {
   handleQuickAction = (operator, amount) => {
     this.setState({
       value: helpers.calculate(operator, this.state.value, amount)
+    }, () => {
+      if (this.props.onChange) {
+        this.props.onChange(this.state.value);
+      }
     });
   }
 

@@ -14,6 +14,10 @@ $rating-padding: $rating-circle-size / 2;
     margin: $spacing-large 0 0;
     padding: 0 $rating-padding ($rating-icon-size * 2);
     position: relative;
+
+    span:not([class]) + & {
+      margin-top: $spacing-base;
+    }
   }
 
   &-slider {

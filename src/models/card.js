@@ -33,6 +33,7 @@ export class CardField {
   component;
   key = '';
   props = {};
+  value = null;
 
   constructor(cmp, key, props) {
     this.component = cmp;

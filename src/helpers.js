@@ -6,8 +6,8 @@ const monthNames = ['January', 'February', 'March', 'April',
 ];
 
 const operations = {
-  '+': (a, b) => a + b,
-  '-': (a, b) => a - b
+  '+': (a, b) => parseInt(a) + parseInt(b),
+  '-': (a, b) => parseInt(a) - parseInt(b)
 };
 
 /**

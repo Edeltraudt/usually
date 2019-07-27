@@ -10,7 +10,6 @@ sleepTime.setHours(22, 32);
 export const NutritionCard = new Card('nutrition', 'Nutrition', 'kcal', IconNutrition);
   NutritionCard.createField(Number, 'amount', {
     label: 'Intake today',
-    value: 1786,
     info: 'Your recommended intake for today so far is 2,341 kcal.'
   });
   NutritionCard.createField(Rating, 'quality', {
@@ -20,14 +19,12 @@ export const NutritionCard = new Card('nutrition', 'Nutrition', 'kcal', IconNutr
 export const SleepCard = new Card('sleep', 'Last Night\'s Sleep', 'time', IconSleep);
   SleepCard.createField(Number, 'amount', {
     label: 'Sleep Duration',
-    value: 397,
     unit: 'time',
     info: '8h 12m seem to work best for you.'
   });
   SleepCard.createField(Number, 'time', {
     label: 'Went to sleep at',
     showLabel: true,
-    value: '22:32',
     unit: 'datetime',
     info: 'Sounds good! Going to sleep between 10–11pm improves your mood by 23%.'
   });
@@ -38,7 +35,6 @@ export const SleepCard = new Card('sleep', 'Last Night\'s Sleep', 'time', IconSl
 export const HydrationCard = new Card('hydration', 'Hydration', 'ml', IconHydration);
   HydrationCard.createField(Number, 'amount', {
     label: 'Water intake today',
-    value: 700,
     info: 'Your recommended intake for today so far is 2,300 ml.',
     quickActions: [
       { operator: '+', amount: 250, icon: IconGlassS },
@@ -49,8 +45,7 @@ export const HydrationCard = new Card('hydration', 'Hydration', 'ml', IconHydrat
 export const EventsCard = new Card('events', 'Life Events', null, IconEvent);
   EventsCard.createField(Text, 'notes', {
     label: 'Notes for yourself',
-    showLabel: true,
-    value: ''
+    showLabel: true
   });
   EventsCard.createField(Rating, 'influence', {
     label: 'How do these events affect you today?'

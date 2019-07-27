@@ -38,7 +38,7 @@ export class Store {
   }
 
   get history() {
-    return helpers.getItem('history');
+    return helpers.getItem('history') || [];
   }
 
   set history(history) {
@@ -54,6 +54,7 @@ export class Store {
   }
 
   saveFieldValue(cardId, fieldId, value) {
+    console.log('Save', value, 'for', `${cardId}.${fieldId}`)
     const activeDay = helpers.formatDate(this.day);
 
     if (activeDay === helpers.formatDate(new Date())) {
@@ -65,14 +66,22 @@ export class Store {
 
   getFieldValue(cardId, fieldId) {
     if (this.day === helpers.formatDate(new Date())) {
-      this.getFieldValueForToday(cardId, fieldId);
+      return this.getFieldValueForToday(cardId, fieldId);
     } else {
-      this.getFieldValueForDay(this.day, cardId, fieldId);
+      return this.getFieldValueForDay(this.day, cardId, fieldId);
+    }
+  }
+
+  getCard(cardId) {
+    if (helpers.formatDate(this.day) === helpers.formatDate(new Date())) {
+      return this.getCardForToday(cardId);
+    } else {
+      return this.getCardForDay(this.day);
     }
   }
 
   saveFieldValueForToday(cardId, fieldId, value) {
-    let today = this.today || { date: new Date() };
+    let today = this.today || { date: helpers.formatDate(new Date()) };
 
     if (!today[cardId]) today[cardId] = {};
 
@@ -82,11 +91,13 @@ export class Store {
   }
 
   getFieldValueForToday(cardId, fieldId) {
-    const today = this.today;
+    if (this.today && this.today[cardId])
+      return this.today[cardId][fieldId];
+    else return null;
+  }
 
-    if (today[cardId]) return today[cardId][fieldId];
-
-    return null;
+  getCardForToday(cardId) {
+    return this.today ? this.today[cardId] : {};
   }
 
   saveFieldValueForDay(date, cardId, fieldId, value) {
@@ -104,12 +115,16 @@ export class Store {
     const { day } = this.getDay(date);
 
     if (day[cardId]) return day[cardId][fieldId];
+    else return null;
+  }
 
-    return null;
+  getCardForDay(date, cardId) {
+    const { day } = this.getDay(date);
+    return day[cardId];
   }
 
   getDay(date) {
-    let history = this.history;
+    const history = this.history;
     let index = history.findIndex(day => day.date === helpers.formatDate(date));
     let day = history[index] || { date };
 

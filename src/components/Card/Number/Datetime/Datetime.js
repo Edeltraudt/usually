@@ -10,7 +10,7 @@ import './Datetime.scss';
 
 export class Datetime extends Component {
   static propTypes = {
-    value: PropTypes.any.isRequired,
+    value: PropTypes.any,
     onChange: PropTypes.func.isRequired,
     style: PropTypes.any,
     className: PropTypes.string
@@ -21,16 +21,24 @@ export class Datetime extends Component {
 
     this.inputRef = React.createRef();
 
-    let [value, internalValue, isPm] =
-      helpers.convertAmPm(props.value.toString() || '00:00');
+    let value = '11:00';
+    let internalValue = '23:00';
+    let isPm = true;
+    let isModified = false;
 
-    this.state = { value, internalValue, isPm };
+    if (props.value) {
+      [value, internalValue, isPm] =
+        helpers.convertAmPm(props.value.toString() || '11:30');
+      isModified = true;
+    }
+
+    this.state = { value, internalValue, isPm, isModified };
   }
 
   handleChange = (input) => {
     let [value, internalValue, isPm] =
       helpers.convertAmPm(input, this.state.isPm, false);
-    this.setState({ value, internalValue, isPm });
+    this.setState({ value, internalValue, isPm, isModified: false });
   }
 
   /**
@@ -41,6 +49,7 @@ export class Datetime extends Component {
     if (event.key === 'Enter') {
       this.inputRef.input.blur();
       this.props.onChange(this.state.internalValue);
+      this.setState({ isModified: true });
     }
   }
 
@@ -51,7 +60,7 @@ export class Datetime extends Component {
   handleAmPmClick = () => {
     let [value, internalValue, isPm] =
       helpers.convertAmPm(this.state.value, this.state.isPm);
-    this.setState({ value, internalValue, isPm });
+    this.setState({ value, internalValue, isPm, isModified: true});
     this.props.onChange(internalValue);
   }
 
@@ -65,13 +74,13 @@ export class Datetime extends Component {
           value={this.state.value}
           style={this.props.style}
           ref={(input) => this.inputRef = input}
-          className='card-number-input'
+          className={this.props.className + (!this.state.isModified ? " -untouched" : "")}
         />}
         value={this.state.value}
         onChange={this.handleChange}
       />
       <span className="unit -toggle"
-        onClick={this.handleAmPmClick}>{this.state.isPm ? 'pm' : 'am'}</span>
+        onClick={this.handleAmPmClick}>{this.state.isPm ? "pm" : "am"}</span>
     </>);
   }
 }

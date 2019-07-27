@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { SmileySad, SmileyHappy } from './../../../asset/icons';
+import PropTypes from 'prop-types';
 
+import { SmileySad, SmileyHappy } from './../../../asset/icons';
 import './Rating.scss';
 
 export const RatingOptions = {
@@ -10,7 +11,15 @@ export const RatingOptions = {
 }
 
 export class Rating extends Component {
-  options = [
+  static propTypes = {
+    showLabel: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    showLabel: true
+  };
+
+  static options = [
     { label: RatingOptions.BAD, icon: SmileySad },
     { label: RatingOptions.OK, icon: null },
     { label: RatingOptions.GOOD, icon: SmileyHappy }
@@ -19,8 +28,14 @@ export class Rating extends Component {
   constructor(props) {
     super(props);
 
+    let selection = null;
+
+    if (props.value) {
+      selection = props.value;
+    }
+
     this.state = {
-      selection: null
+      selection
     };
   }
 
@@ -52,7 +67,7 @@ export class Rating extends Component {
         <div className="card-rating-wrap">
           <div className="card-rating-slider"></div>
 
-          {this.options.map((option, index) => {
+          {Rating.options.map((option, index) => {
             const isActive = this.state.selection === option.label;
             const isActiveCls = isActive ? activeCls : '';
             const cls = option.label.toLowerCase() + isActiveCls;

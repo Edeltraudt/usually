@@ -24,10 +24,18 @@ export class Time extends Component {
     super(props);
 
     this.inputRef = React.createRef();
-    this.state = {
-      value: this.convertValue(props.value),
-      internalValue: parseInt(props.value) || '00:00'
-    };
+
+    let value = '00:00';
+    let internalValue = 0;
+    let isModified = false;
+
+    if (props.value) {
+      value = this.convertValue(props.value);
+      internalValue = parseInt(props.value);
+      isModified = true;
+    }
+
+    this.state = { value, internalValue, isModified }
   }
 
   /**
@@ -44,16 +52,9 @@ export class Time extends Component {
     return `${hours}:${minutes}`;
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({
-      value: this.convertValue(props.value),
-      internalValue: parseInt(props.value)
-    });
-  }
-
   handleChange = (value) => {
     const internalValue = helpers.getTimeAsMinutes(value);
-    this.setState({value, internalValue});
+    this.setState({ value, internalValue, isModified: true });
     this.props.onChange(internalValue);
   }
 
@@ -62,6 +63,7 @@ export class Time extends Component {
       this.props.onChange(this.state.internalValue);
       this.props.onKeyPress(event);
       this.inputRef.input.blur();
+      this.setState({ isModified: true });
     }
   }
 
@@ -75,7 +77,7 @@ export class Time extends Component {
             value={this.state.value}
             style={this.props.style}
             ref={(input) => this.inputRef = input}
-            className={this.props.className}
+            className={this.props.className + (!this.state.isModified ? " -untouched" : "")}
           />}
         value={this.state.value}
         onChange={this.handleChange}
