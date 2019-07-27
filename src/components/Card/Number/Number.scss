@@ -7,7 +7,11 @@
   flex: 1;
   font-size: $fs-x-large;
   font-weight: $fw-headlines;
-  margin: 0 0 0.125em;
+  margin: 0;
+
+  &:only-child {
+    margin: 0 0 0.125em;
+  }
 
   .unit {
     margin-left: 0;
