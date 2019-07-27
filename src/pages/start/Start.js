@@ -3,9 +3,12 @@ import { withRouter } from 'react-router-dom'
 
 import './Start.scss';
 
-import cardPreview from './../../asset/images/card-preview.svg';
 import { RegistrationWithRouter } from '../../components/Registration';
 import { MoodSlider } from '../../components/MoodSlider';
+
+import { Card } from '../../components/Card';
+import { NutritionCard } from '../../models/card-types';
+
 
 import * as errors from '../../errors';
 
@@ -62,8 +65,7 @@ class Start extends Component {
           </div>
 
           <aside className="start-content-demo">
-            {/* TODO: replace with actual card for playing around and quick demo */}
-            <img src={cardPreview} alt="" />
+            <Card data={NutritionCard} />
           </aside>
         </main>
 

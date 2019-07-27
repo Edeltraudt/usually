@@ -15,6 +15,7 @@
   border-radius: $border-radius-large;
   box-shadow: 0 2px 6px -1px rgba($shadow-color, 0.075),
     0 12px 40px -10px rgba($shadow-color, 0.2);
+  color: $color-text;
   transition: 0.2s ease;
 
   &:hover, &:focus-within {
