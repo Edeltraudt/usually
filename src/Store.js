@@ -2,7 +2,19 @@ import * as helpers from './helpers';
 
 export class Store {
   localStorage = window.localStorage;
+
+  // TODO: day navigation
   day = new Date();
+
+  constructor(props) {
+    const previousDay = this.today;
+    const todayDate = helpers.formatDate(new Date());
+
+    if (todayDate !== previousDay.date) {
+      this.addToHistory(previousDay);
+      this.today = { date: todayDate };
+    }
+  }
 
   set user(user) {
     console.log('Set user to', user);
@@ -53,6 +65,12 @@ export class Store {
     return helpers.setItem('today', today);
   }
 
+  addToHistory(activity) {
+    const history = this.history;
+    history.push(activity);
+    this.history = history;
+  }
+
   saveFieldValue(cardId, fieldId, value) {
     console.log('Save', value, 'for', `${cardId}.${fieldId}`)
     const activeDay = helpers.formatDate(this.day);
@@ -73,7 +91,7 @@ export class Store {
   }
 
   getCard(cardId) {
-    if (helpers.formatDate(this.day) === helpers.formatDate(new Date())) {
+    if (this.day === helpers.formatDate(new Date())) {
       return this.getCardForToday(cardId);
     } else {
       return this.getCardForDay(this.day);
