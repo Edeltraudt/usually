@@ -10,10 +10,12 @@ import { StartWithRouter } from './pages/start/Start';
 import { Dashboard } from './pages/dashboard';
 
 import { Store } from './Store';
+import { Predictor } from './Predictor';
 
 const store = new Store();
+const predictor = new Predictor();
 const start = () => <StartWithRouter store={store} />;
-const dashboard = () => <Dashboard store={store} />;
+const dashboard = () => <Dashboard store={store} predictor={predictor} />;
 
 const routing = (
   <Router>

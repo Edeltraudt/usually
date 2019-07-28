@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 
 import './Dashboard.scss';
 
@@ -39,7 +40,11 @@ export class Dashboard extends Component {
   }
 
   render() {
-    const store = this.props.store;
+    const { store, predictor } = this.props;
+
+    if (!store || !store.user) {
+      return <Redirect to="/" />;
+    }
 
     return (
       <div className="dashboard">
@@ -62,15 +67,25 @@ export class Dashboard extends Component {
           </header>
 
           <div className="dashboard-grid" ref={this.gridRef}>
-            <Card data={NutritionCard} store={store}
+            <Card data={NutritionCard}
+                store={store}
+                predictor={predictor}
                 getRef={ref => (this.gridItems[0] = ref)}/>
-            <Card data={SleepCard} store={store}
+            <Card data={SleepCard}
+                store={store}
+                predictor={predictor}
                 getRef={ref => (this.gridItems[1] = ref)}/>
-            <Card data={HydrationCard} store={store}
+            <Card data={HydrationCard}
+                store={store}
+                predictor={predictor}
                 getRef={ref => (this.gridItems[2] = ref)} />
-            <Card data={EventsCard} store={store}
+            <Card data={EventsCard}
+                store={store}
+                predictor={predictor}
                 getRef={ref => (this.gridItems[3] = ref)} />
-            <Card data={MentalFitnessCard} store={store}
+            <Card data={MentalFitnessCard}
+                store={store}
+                predictor={predictor}
                 getRef={ref => (this.gridItems[4] = ref)} />
           </div>
         </main>
