@@ -10,7 +10,7 @@ export class Store {
     const previousDay = this.today;
     const todayDate = helpers.formatDate(new Date());
 
-    if (todayDate !== previousDay.date) {
+    if (previousDay && (todayDate !== previousDay.date)) {
       this.addToHistory(previousDay);
       this.today = { date: todayDate };
     }
@@ -26,7 +26,8 @@ export class Store {
   }
 
   get age() {
-    return new Date().getFullYear() - this.user.birthYear;
+    let age = new Date().getFullYear() - this.user.birthYear;
+    return isNaN(age) ? 25 : age;
   }
 
   get nutritionRecommendation() {
@@ -83,7 +84,7 @@ export class Store {
   }
 
   getFieldValue(cardId, fieldId) {
-    if (this.day === helpers.formatDate(new Date())) {
+    if (helpers.formatDate(this.day) === helpers.formatDate(new Date())) {
       return this.getFieldValueForToday(cardId, fieldId);
     } else {
       return this.getFieldValueForDay(this.day, cardId, fieldId);
@@ -91,7 +92,7 @@ export class Store {
   }
 
   getCard(cardId) {
-    if (this.day === helpers.formatDate(new Date())) {
+    if (helpers.formatDate(this.day) === helpers.formatDate(new Date())) {
       return this.getCardForToday(cardId);
     } else {
       return this.getCardForDay(this.day);
