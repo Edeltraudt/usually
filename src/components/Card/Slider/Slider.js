@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import './Slider.scss';
 
@@ -7,73 +8,73 @@ export const SliderType = {
   MULTI: 1
 }
 
-class SliderPoint {
-  x = 0;
-  xPercent = 0;
-
-  constructor(left, parentRect) {
-    this.x = left - parentRect.left;
-    this.xPercent = this.x / parentRect.width * 100;
-  }
-}
-
 export class Slider extends Component {
+  static propTypes = {
+    type: PropTypes.number,
+    min: PropTypes.number,
+    max: PropTypes.number,
+    step: PropTypes.number,
+    value: PropTypes.number,
+    onChange: PropTypes.func.isRequired
+  };
+
+  static defaultProps = {
+    type: SliderType.PROGRESS,
+    min: 0,
+    max: 100,
+    value: 0,
+    step: 1
+  };
+
   constructor(props) {
     super(props);
 
     this.lineRef = React.createRef();
-    this.getRectsInterval = undefined;
-    this.type = this.props.type || SliderType.PROGRESS;
+    this.type = props.type;
     this.state = {
-      lineRect: { left: 0, width: 1 },
-      points: []
-    };
-  }
-
-  componentDidMount() {
-    this.getRectsInterval = setInterval(() => {
-      this.setState(state => {
-        const lineRect = this.lineRef.current.getBoundingClientRect();
-        return JSON.stringify(lineRect) !== JSON.stringify(state.lineRect) ? { lineRect } : null;
-      });
-    }, 100);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.getRectsInterval);
-  }
-
-  handleClick = (event) => {
-    if (this.type === SliderType.MULTI) {
-      if (!this.state.points.find(p => p.absolutePosition === event.clientX)) {
-        this.createNewPoint(event.clientX, this.state.lineRect);
-      }
+      value: props.value
     }
   }
 
-  createNewPoint = (x, parentRect) => {
-    const point = new SliderPoint(x, parentRect);
-    this.setState({ points: [...this.state.points, point] });
+  componentWillReceiveProps(props) {
+    if (props.value) {
+      this.setState({ value: props.value });
+    }
   }
 
-  renderThumb(left, inPercent = false, key = 0) {
-    if (inPercent) left += '%';
+  onChange = (event) => {
+    this.setState({ value: event.target.value });
+    this.props.onChange(event.target.value);
+  }
 
-    return <span className="slider-indicator"
-              key={key}
-              style={{left}} />;
+  get percentage() {
+    const percentage = (this.state.value / this.props.max);
+    return percentage > 1 ? 1 : percentage;
   }
 
   render() {
+    const { min, max, step } = this.props;
+
     return (
       <div className="slider">
-        <div className="slider-line" ref={this.lineRef} />
-
-        {this.type === SliderType.PROGRESS &&
-          this.renderThumb(100)}
-
-        {this.type === SliderType.MULTI &&
-          this.state.points.map((point, index) => this.renderThumb(point.xPercent, true, index))}
+        <div className="slider-mirror" aria-hidden="true">
+          <div className="slider-line">
+            <span className="slider-line-fill"
+                style={{ transform: `scaleX(${this.percentage})` }} />
+          </div>
+          <div className="slider-mirror-wrap">
+            <div className="slider-thumb-position"
+                style={{ transform: `translateX(${this.percentage * 100 + '%'})` }}>
+              <div className="slider-thumb-wrap">
+                <span className="slider-thumb" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <input type="range" className="slider-input"
+            min={min} max={max} step={step}
+            value={this.state.value}
+            onChange={this.onChange} />
       </div>
     );
   }

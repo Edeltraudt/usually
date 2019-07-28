@@ -8,7 +8,7 @@ import './Number.scss';
 
 import { Datetime } from './Datetime';
 import { Time } from './Time';
-import { Slider } from '../Slider';
+import { Slider, SliderType } from '../Slider';
 
 export class Number extends Component {
   static propTypes = {
@@ -19,6 +19,7 @@ export class Number extends Component {
     info: PropTypes.string,
     onChange: PropTypes.func,
     quickActions: PropTypes.array,
+    recommendation: PropTypes.any,
     data: PropTypes.any
   };
 
@@ -40,6 +41,18 @@ export class Number extends Component {
     this.setState({ value: props.value });
   }
 
+  passUpValue = (value) => {
+    // pass updated value upwards with a delay
+    if (this.props.onChange) {
+      this.setState({
+        timeout: window.setTimeout(() => {
+          this.props.onChange(value);
+          this.setState({ timeout: null });
+        }, 200)
+      });
+    }
+  }
+
   handleChange = (event) => {
     if (this.state.timeout) window.clearTimeout(this.state.timeout);
 
@@ -50,16 +63,7 @@ export class Number extends Component {
 
     if (this.props.unit === 'datetime' || !isNaN(value)) {
       this.setState({ value });
-
-      // pass updated value upwards with a delay
-      if (this.props.onChange) {
-        this.setState({
-          timeout: window.setTimeout(() => {
-            this.props.onChange(value);
-            this.setState({ timeout: null });
-          }, 200)
-        });
-      }
+      this.passUpValue(value);
     }
   }
 
@@ -87,6 +91,11 @@ export class Number extends Component {
     });
   }
 
+  handleSliderChange = (value) => {
+    this.setState({value});
+    this.passUpValue(value);
+  }
+
   renderInput() {
     const sharedProps = {
       style: { fontSize: 30 },
@@ -94,6 +103,10 @@ export class Number extends Component {
       onChange: this.handleChange,
       onKeyPress: this.handleKeyPress,
       className: 'card-number-input'
+    };
+
+    if (this.props.unit !== 'datetime') {
+      sharedProps.value = parseInt(sharedProps.value);
     }
 
     switch (this.props.unit) {
@@ -109,9 +122,17 @@ export class Number extends Component {
     }
   }
 
+  renderSlider() {
+    return (<Slider type={SliderType.PROGRESS}
+      max={this.props.recommendation.value}
+      value={parseInt(this.state.value)}
+      onChange={this.handleSliderChange} />);
+  }
+
   render() {
     return (<>
-      <Slider />
+      {(this.props.unit !== 'datetime' && this.props.unit !== 'time') &&
+        this.renderSlider()}
       <div className="card-number">
         <span aria-label={this.props.label} className="card-section-heading">
           {(this.props.showLabel) && this.props.label}
@@ -134,8 +155,8 @@ export class Number extends Component {
             </div>}
         </div>
 
-        {this.props.info &&
-          <p className="card-info">{this.props.info}</p>}
+        {(this.props.recommendation && this.props.recommendation.text) &&
+          <p className="card-info">{this.props.recommendation.text}</p>}
       </div>
     </>);
   }

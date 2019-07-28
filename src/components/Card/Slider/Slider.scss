@@ -1,36 +1,91 @@
 @import "../../../asset/scss/utility";
 
 $padding: 5px;
-$border-width: 2px;
+$border-width: 4px;
+
+@mixin slider-transition($property: all) {
+  transition: $property 0s;
+}
 
 .slider {
-  cursor: pointer;
   left: 0;
-  padding: $padding 0;
   position: absolute;
-  top: -($padding + $border-width + 1);
-  width: 100%;
+  right: 0;
+  top: -$border-width;
 
-  &-line {
-    border-bottom: $border-width solid $color-border;
-    border-top: $border-width solid $color-border;
-    position: relative;
-    transition: transition(ease);
+  &-input {
+    box-sizing: content-box;
+    cursor: pointer;
+    height: $border-width;
+    left: 0;
+    opacity: 0;
+    padding: $padding 0;
+    position: absolute;
+    top: $border-width / 2;
+    transform: translateY(-50%);
+    width: 100%;
+    z-index: 3;
+
+    &::-webkit-slider-thumb {
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
   }
 
-  &-indicator {
-    @include circle(8px, $color-focus);
+  &-mirror {
     align-items: center;
     display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
+
+    &-wrap {
+      height: 100%;
+      left: $padding;
+      position: absolute;
+      right: $padding;
+      top: 0;
+    }
   }
 
-  &:hover & {
-    &-line {
-      border-color: darken($color-border, 5%);
+  &-line {
+    background: $color-border;
+    display: block;
+    height: $border-width;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+
+    &-fill {
+      @include slider-transition(transform);
+      background: $color-focus;
+      display: block;
+      height: inherit;
+      transform: scaleX(0);
+      transform-origin: center left;
+      width: 100%;
+    }
+  }
+
+  &-thumb {
+    @include circle($border-width * 2 + 2, $color-focus);
+
+    &-position {
+      @include slider-transition(transform);
+      align-items: center;
+      display: flex;
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 2;
+    }
+
+    &-wrap {
+      position: relative;
+      transform: translateX(-50%);
     }
   }
 }

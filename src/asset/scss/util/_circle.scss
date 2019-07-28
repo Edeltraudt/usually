@@ -11,6 +11,7 @@
 
 %circle {
   cursor: pointer;
+  display: block;
   position: relative;
 
   &, &::before {

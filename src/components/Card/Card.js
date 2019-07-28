@@ -13,8 +13,11 @@ export class Card extends Component {
   constructor(props) {
     super(props);
     this.ref = React.createRef();
-    this.data = props.store.getCard(this.props.data.key);
     this.key = props.data.key;
+
+    if (props.store) {
+      this.data = props.store.getCard(this.props.data.key);
+    }
   }
 
   componentDidMount() {
@@ -38,6 +41,10 @@ export class Card extends Component {
     return null;
   }
 
+  getRecommendationFor(card, field, unit) {
+    return this.props.predictor.getRecommendationFor(card, field, unit);
+  }
+
   render() {
     const { label, unit, fields } = this.props.data;
 
@@ -56,6 +63,7 @@ export class Card extends Component {
               <field.component unit={unit}
                   onChange={value => this.handleFieldChange(value, field)}
                   value={this.getFieldValue(field)}
+                  recommendation={this.getRecommendationFor(this.key, field.key, unit)}
                   {...field.props} />
             </div>)}
         </div>

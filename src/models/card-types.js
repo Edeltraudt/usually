@@ -20,7 +20,8 @@ export const SleepCard = new Card('sleep', 'Last Night\'s Sleep', 'time', IconSl
   SleepCard.createField(Number, 'amount', {
     label: 'Sleep Duration',
     unit: 'time',
-    info: '8h 12m seem to work best for you.'
+    info: '8h 12m seem to work best for you.',
+    showLabel: true
   });
   SleepCard.createField(Number, 'time', {
     label: 'Went to sleep at',
