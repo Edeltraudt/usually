@@ -3,6 +3,7 @@ import Draggable from 'react-draggable';
 import PropTypes from 'prop-types';
 
 import './MoodSlider.scss';
+import { IconSmile } from '../../asset/icons';
 
 export class MoodSlider extends Component {
   static propTypes = {
@@ -23,7 +24,8 @@ export class MoodSlider extends Component {
       deltaY: 0,
       relativeY: 0,
       timeout: null,
-      defaultPosition: null
+      defaultPosition: null,
+      level: 2
     };
   }
 
@@ -31,10 +33,21 @@ export class MoodSlider extends Component {
     if (!this.props.readOnly && this.props.store) {
       const value = this.props.store.getFieldValue(this.key, this.field);
       const deltaY = this.fromRelativePosition(value);
-      this.setState({ defaultPosition: { x: 0, y: deltaY }});
+      this.setState({
+        defaultPosition: { x: 0, y: deltaY },
+        level: this.getLevelFromValue(value)
+      });
     } else {
       this.setState({ defaultPosition: { x: 0, y: 0 } });
     }
+  }
+
+  getLevelFromValue = (value) => {
+    if (value >= 0.8) return 5;
+    if (value >= 0.6) return 4;
+    if (value >= 0.4) return 3;
+    if (value >= 0.2) return 2;
+    if (value >= 0) return 1;
   }
 
   getRelativePosition = (y) => {
@@ -84,13 +97,8 @@ export class MoodSlider extends Component {
 
   render() {
     const smiley = <div className="mood-slider-smiley" ref={this.smileyRef} >
-      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 149.8 121" enableBackground="new 0 0 149.8 121">
-        <path className="smile-mouth" fill="currentColor" d="M74.9,121c-34,0-64.1-22.8-74.9-56.7l14.3-4.5C23.1,87.4,47.5,106,74.9,106c27.5,0,51.9-18.6,60.6-46.3
-          l14.3,4.5C139.1,98.2,109,121,74.9,121z"
-            ref={this.mouthRef}   />
-        <circle className="smile-eye-left" fill="currentColor" cx="31.9" cy="14" r="14"/>
-        <circle className="smile-eye-right" fill="currentColor" cx="117.9" cy="14" r="14"/>
-      </svg>
+      <IconSmile
+        level={this.state.level} />
     </div>;
 
     return (
@@ -103,8 +111,7 @@ export class MoodSlider extends Component {
                 bounds="parent"
                 onDrag={this.handleDrag}
                 disabled={this.props.readOnly}
-                defaultPosition={this.state.defaultPosition}
-              >
+                defaultPosition={this.state.defaultPosition} >
               { smiley }
             </Draggable>
             : <>{ smiley }</> }

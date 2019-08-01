@@ -38,8 +38,8 @@ export const HydrationCard = new Card('hydration', 'Hydration', 'ml', IconHydrat
     label: 'Water intake today',
     info: 'Your recommended intake for today so far is 2,300 ml.',
     quickActions: [
-      { operator: '+', amount: 250, icon: IconGlassS },
-      { operator: '+', amount: 400, icon: IconGlassL }
+      { operator: '+', amount: 200, icon: IconGlassS },
+      { operator: '+', amount: 300, icon: IconGlassL }
     ]
   });
 

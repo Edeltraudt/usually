@@ -1,4 +1,68 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+export class IconSmile extends Component {
+  static propTypes = {
+    level: PropTypes.number,
+    isAnimated: PropTypes.bool
+  };
+
+  static defaultProps = {
+    isAnimated: false
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      level: props.level,
+      targetLevel: props.level + 1
+    };
+  }
+
+  static getSmilePath = (level) => {
+    switch(level) {
+      case 5:
+        return 'M7.8,113.1c8.4-28.8,34.8-50.8,67.1-50.8 s57.5, 20.6, 67.1, 50.8';
+      case 4:
+        return 'M7.8,72.3c18.8-4.9,34.8-10,67.1-10 s44.8, 3.7, 67.1, 10';
+      case 3:
+        return 'M7.8,72c29.3,0,34.8,0,67.1,0s37.6,0,67.1,0';
+      case 2:
+        return 'M7.8,62.3c25.9,23.9,53,23.8,67.1,23.8 c17.4, 0, 43.8, 0.1, 67.1-23.8';
+      case 1:
+        // falls through
+      default:
+        return 'M7.8,62.3c6.8,27.2,34.8,50.8,67.1,50.8 s60.3-23.5, 67.1-50.8';
+    }
+  }
+
+  handleRef = (ref) => {
+    if (this.props.getRef) this.props.getRef(ref);
+  }
+
+  render() {
+    return <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 150 121" >
+      <circle cx="32" cy="14" r="14" className="smile-eye-left" />
+      <circle cx="118" cy="14" r="14" className="smile-eye-right" />
+      <path fill="none"
+          stroke="currentColor"
+          strokeWidth="15"
+          strokeMiterlimit="10"
+          ref={this.handleRef}
+          d={IconSmile.getSmilePath(this.state.level)}>
+        {this.props.isAnimated &&
+          <animate
+              attributeName="d"
+              values={IconSmile.getSmilePath(this.state.level)+';'+
+                      IconSmile.getSmilePath(this.state.targetLevel)}
+              dur="1s"
+              fill="freeze"
+              begin="click" />}
+      </path>
+    </svg>;
+  }
+}
 
 export class IconSleep extends Component {
   render() {
