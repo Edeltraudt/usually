@@ -27,11 +27,13 @@ export class Card extends Component {
   handleFieldChange = (value, field) => {
     let saveValue = value;
 
-    this.props.store.saveFieldValue(
-      this.key,
-      field.key,
-      saveValue
-    );
+    if (this.props.store) {
+      this.props.store.saveFieldValue(
+        this.key,
+        field.key,
+        saveValue
+      );
+    }
   }
 
   getFieldValue = (field) => {
@@ -42,7 +44,9 @@ export class Card extends Component {
   }
 
   getRecommendationFor(card, field, unit) {
-    return this.props.predictor.getRecommendationFor(card, field, unit);
+    if (this.props.predictor) {
+      return this.props.predictor.getRecommendationFor(card, field, unit);
+    }
   }
 
   render() {

@@ -36,9 +36,13 @@ export class Datetime extends Component {
   }
 
   handleChange = (input) => {
+    this.handleTimeChange(input);
+  }
+
+  handleTimeChange = (input, updateAmPm = false) => {
     let [value, internalValue, isPm] =
-      helpers.convertAmPm(input, this.state.isPm, false);
-    this.setState({ value, internalValue, isPm, isModified: false });
+      helpers.convertAmPm(input, this.state.isPm, updateAmPm);
+    this.setState({ value, internalValue, isPm, isModified: true });
   }
 
   /**
@@ -48,8 +52,8 @@ export class Datetime extends Component {
   handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       this.inputRef.input.blur();
-      this.props.onChange(this.state.internalValue);
       this.setState({ isModified: true });
+      this.handleTimeChange(this.state.value, true);
     }
   }
 
@@ -59,7 +63,7 @@ export class Datetime extends Component {
    */
   handleAmPmClick = () => {
     let [value, internalValue, isPm] =
-      helpers.convertAmPm(this.state.value, this.state.isPm);
+      helpers.convertAmPm(this.state.value, this.state.isPm, true, true);
     this.setState({ value, internalValue, isPm, isModified: true});
     this.props.onChange(internalValue);
   }

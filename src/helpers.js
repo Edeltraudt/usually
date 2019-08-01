@@ -38,28 +38,38 @@ export function getTimeAsMinutes(str) {
  * Takes hours and original am/pm as starting parameters and
  * returns converted hours and opposite am/pm as an object.
  */
-export function convertAmPm(time, isPm, updateAmPm = true) {
+export function convertAmPm(time, isPm, updateAmPm = true, forceUpdate = false) {
   let [hours, minutes] = time.split(':');
   let _isPm = isPm;
 
-  if (updateAmPm) {
-    if (hours >= 12) _isPm = true;
-    else _isPm = false;
-  }
+  if (updateAmPm && hours >= 12) _isPm = true;
 
   // convert 24-hour format into 12-hour format
-  if (isPm === undefined || hours > 12) {
-    hours = hours % 12;
-    if (hours === 0) hours = 12;
-  }
+  if (updateAmPm) {
+    if (isPm === undefined || hours > 12) {
+      hours = hours % 12;
+      hours = hours === 0 ? 12 : hours;
+    }
 
-  if (updateAmPm && isPm !== undefined) _isPm = !isPm;
+    if (isPm !== undefined && forceUpdate) {
+      _isPm = !isPm;
+    }
+  }
 
   return [
     formatTime(hours, minutes),
     convertTo24HoursFormat(hours, minutes, _isPm),
     _isPm
   ];
+}
+
+export function switchAmPm(time, isPm) {
+  let [value, internalValue, _isPm] =
+    this.convertAmPm(time, isPm, false);
+
+  _isPm = !isPm;
+
+  return [ value, internalValue, _isPm ];
 }
 
 export function convertTo24Hours(hours, isPm) {

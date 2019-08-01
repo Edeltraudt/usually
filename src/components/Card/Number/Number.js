@@ -123,10 +123,12 @@ export class Number extends Component {
   }
 
   renderSlider() {
-    return (<Slider type={SliderType.PROGRESS}
-      max={this.props.recommendation.value}
-      value={parseInt(this.state.value)}
-      onChange={this.handleSliderChange} />);
+    return this.props.recommendation
+      ? <Slider type={SliderType.PROGRESS}
+          max={this.props.recommendation.value}
+          value={parseInt(this.state.value)}
+          onChange={this.handleSliderChange} />
+      : null;
   }
 
   render() {

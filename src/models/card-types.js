@@ -17,17 +17,17 @@ export const NutritionCard = new Card('nutrition', 'Nutrition', 'kcal', IconNutr
   });
 
 export const SleepCard = new Card('sleep', 'Last Night\'s Sleep', 'time', IconSleep);
-  SleepCard.createField(Number, 'amount', {
-    label: 'Sleep Duration',
-    unit: 'time',
-    info: '8h 12m seem to work best for you.',
-    showLabel: true
-  });
-  SleepCard.createField(Number, 'time', {
+  SleepCard.createField(Number, 'sleeptime', {
     label: 'Went to sleep at',
     showLabel: true,
     unit: 'datetime',
     info: 'Sounds good! Going to sleep between 10–11pm improves your mood by 23%.'
+  });
+  SleepCard.createField(Number, 'wakeuptime', {
+    label: 'Woke up at',
+    showLabel: true,
+    unit: 'datetime',
+    info: ''
   });
   SleepCard.createField(Rating, 'quality', {
     label: 'How did you feel when you woke up?'
