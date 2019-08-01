@@ -46,7 +46,7 @@ export function convertAmPm(time, isPm, updateAmPm = true, forceUpdate = false) 
 
   // convert 24-hour format into 12-hour format
   if (updateAmPm) {
-    if (isPm === undefined || hours > 12) {
+    if (isPm === undefined || hours > 12 || hours === 0) {
       hours = hours % 12;
       hours = hours === 0 ? 12 : hours;
     }
